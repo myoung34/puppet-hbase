@@ -1,0 +1,36 @@
+require 'spec_helper_acceptance'
+
+describe 'hbase class' do
+  it 'should work with no errors' do
+    pp = <<-EOS
+      class { 'hbase':
+        port => '8080',
+      }
+    EOS
+
+    # Run it twice and test for idempotency
+    apply_manifest(pp, :catch_failures => true)
+    expect(apply_manifest(pp, :catch_failures => true).exit_code).to be_zero
+
+    shell("rpm -qa | grep hbase") do |result|
+      assert_match /^hbase/, result.stdout, 'HBase package install was not successful.'
+    end
+
+    shell("sleep 30 && curl -s http://localhost:8080/version") do |result|
+      assert_match /^rest/, result.stdout, 'HBase REST did not return a version'
+    end
+
+    shell("curl -s -X PUT 'http://localhost:8080/test/schema' -H 'Accept: application/json' -H 'Content-Type: application/json' -d '{\"@name\":\"test\",\"ColumnSchema\":[{\"name\":\"data\"}]}'  -w '%{http_code}'") do |result|
+      assert_match result.stdout, '201', 'HBase REST Master create the table.'
+    end
+
+    shell("curl -s -o /tmp/hbase_table_list.html -w '%{http_code}' http://localhost:8080") do |result|
+      assert_match result.stdout, '200', 'HBase REST Master did not return a 200 OK'
+    end
+
+    shell("cat /tmp/hbase_table_list.html") do |result|
+      assert_match /^test\n?$/, result.stdout, 'HBase REST Master did not return the created table.'
+    end
+
+  end
+end

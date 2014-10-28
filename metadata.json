@@ -1,0 +1,22 @@
+{
+  "name": "myoung34-hbase",
+  "version": "0.0.1",
+  "author": "Marcus Young",
+  "license": "Licensed under (MIT)",
+  "description": "Can be used to set up HBase",
+  "summary": "A module for managing HBase and the HBase REST API",
+  "source": "https://github.com/myoung34/puppet-hbase",
+  "project_page": "(https://forge.puppetlabs.com/myoung34/hbase)",
+  "issues_url": "https://github.com/myoung34/puppet-hbase/issues",
+  "tags": ["rest", "hbase", "nosql", "database", "apache", "zookeeper", "hadoop", "hdp"],
+  "operatingsystem_support": [
+    {
+    "operatingsystem":"RedHat"
+    }
+   ],
+  "dependencies": [
+    { "name": "puppetlabs/stdlib", "version_requirement": ">= 0.1.6" },
+    { "name": "puppetlabs/firewall", "version_requirement": ">= 0.3.0" },
+    { "name": "puppetlabs/java", "version_requirement": ">= 1.1.0" }
+  ]
+}

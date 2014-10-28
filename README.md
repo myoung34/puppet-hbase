@@ -8,12 +8,13 @@ About
 =====
 
 [HBase](https://hbase.apache.org) Apache HBase is the Hadoop database, a distributed, scalable, big data store. This module is aimed at CentOS only (untested on RHEL).
+This module starts the HBase master and REST API with built-in zookeeper.
 
 Supported Versions (tested)
 =================
 ## OS ##
 * CentOS 6
-    * {{version}}
+    * hbase-0.98.0.2.1.3.0
 
 Quick Start
 ===========

@@ -1,0 +1,7 @@
+fixtures:
+  forge_modules:
+    firewall: "puppetlabs/firewall"
+    java: "puppetlabs/java"
+    stdlib: "puppetlabs/stdlib"
+  symlinks:
+      hbase: "#{source_dir}"

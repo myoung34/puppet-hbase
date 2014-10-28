@@ -1,0 +1,5 @@
+/pkg
+/.vagrant
+/log
+/coverage
+/spec/fixtures
