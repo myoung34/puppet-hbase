@@ -47,25 +47,6 @@
 class hbase::hbase (
   $port = $hbase::params::port,
 ) inherits hbase::params {
-  yumrepo { 'HDP-2.1.4.0':
-    baseurl         => 'http://public-repo-1.hortonworks.com/HDP/centos6/2.x/updates/2.1.4.0',
-    descr           => 'Hortonworks Data Platform Version - HDP-2.1.4.0',
-    enabled         => 1,
-    gpgcheck        => 0,
-    gpgkey          => 'http://public-repo-1.hortonworks.com/HDP/centos6/2.x/updates/2.1.4.0/RPM-GPG-KEY/RPM-GPG-KEY-Jenkins',
-    metadata_expire => 10,
-    priority        => 1,
-  }->
-
-  yumrepo { 'HDP-UTILS-1.1.0.17':
-    baseurl         => 'http://public-repo-1.hortonworks.com/HDP-UTILS-1.1.0.17/repos/centos6',
-    descr           => 'Hortonworks Data Platform Utils Version - HDP-UTILS-1.1.0.17',
-    enabled         => 1,
-    gpgcheck        => 0,
-    gpgkey          => 'http://public-repo-1.hortonworks.com/HDP/centos6/2.x/updates/2.1.4.0/RPM-GPG-KEY/RPM-GPG-KEY-Jenkins',
-    metadata_expire => 10,
-    priority        => 1,
-  }->
 
   firewall { '102 allow hbase':
     action => accept,
@@ -74,17 +55,6 @@ class hbase::hbase (
     ],
     proto  => tcp,
   }->
-
-  class { 'java':
-    distribution => 'jre',
-  }->
-
-  group { 'hadoop':
-    ensure     => present,
-  }
-
-  $created_resource_hash = create_resources_hash_from(['hdfs'])
-  create_resources(hbase::hadoopuser, $created_resource_hash)
 
   package { 'hbase':
     ensure   => latest,
