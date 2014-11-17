@@ -88,6 +88,7 @@ class hbase::hbase (
 
   package { 'hbase':
     ensure   => latest,
+    notify   => Service['hbase'],
     provider => yum,
     require  => [
       Yumrepo['HDP-UTILS-1.1.0.17'],
@@ -97,25 +98,28 @@ class hbase::hbase (
 
   file { '/etc/profile.d/hbase.sh':
     content => template('hbase/profile_d_hbase.sh.erb'),
-    replace => true,
-    mode    => '0777',
-    owner   => 'root',
     group   => 'root',
+    mode    => '0777',
+    notify  => Service['hbase'],
+    owner   => 'root',
+    replace => true,
   }->
 
   exec { 'fix hbase JAVA_HOME':
     command => 'sed -i.bak "s/export JAVA_HOME=\/usr\/java\/default//g" /usr/lib/hbase/conf/hbase-env.sh; cat /etc/zookeeper/conf/java.env >> /usr/lib/hbase/conf/hbase-env.sh',
+    notify  => Service['hbase'],
+    onlyif  => 'grep -r "export JAVA_HOME=/usr/java/default" /usr/lib/hbase/conf/hbase-env.sh',
     path    => $::path,
     require => Package['hbase'],
-    onlyif  => 'grep -r "export JAVA_HOME=/usr/java/default" /usr/lib/hbase/conf/hbase-env.sh',
   }->
 
   file { '/etc/init.d/hbase':
     content => template('hbase/init_d_hbase.erb'),
-    replace => true,
-    mode    => '0744',
-    owner   => 'root',
     group   => 'root',
+    mode    => '0744',
+    notify  => Service['hbase'],
+    owner   => 'root',
+    replace => true,
   }->
 
   service { 'hbase':

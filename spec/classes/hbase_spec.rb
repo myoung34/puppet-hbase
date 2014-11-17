@@ -32,9 +32,9 @@ describe 'hbase' do
 
 
     it { should contain_package('hbase').with_ensure('latest').with_provider('yum').with_require('[Yumrepo[HDP-UTILS-1.1.0.17]{:name=>"HDP-UTILS-1.1.0.17"}, Yumrepo[HDP-2.1.4.0]{:name=>"HDP-2.1.4.0"}]') }
-    it { should contain_file('/etc/profile.d/hbase.sh').with_replace('true').with_mode('0777').with_owner('root').with_group('root') }
-    it { should contain_exec('fix hbase JAVA_HOME').with_require('Package[hbase]') }
-    it { should contain_file('/etc/init.d/hbase').with_replace('true').with_mode('0744').with_owner('root').with_group('root') }
+    it { should contain_file('/etc/profile.d/hbase.sh').with_replace('true').with_mode('0777').with_notify('Service[hbase]').with_owner('root').with_group('root') }
+    it { should contain_exec('fix hbase JAVA_HOME').with_notify('Service[hbase]').with_require('Package[hbase]') }
+    it { should contain_file('/etc/init.d/hbase').with_replace('true').with_mode('0744').with_notify('Service[hbase]').with_owner('root').with_group('root') }
 
     it { should contain_service('hbase').with_ensure('running') }
   
