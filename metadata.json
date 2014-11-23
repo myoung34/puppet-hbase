@@ -1,12 +1,12 @@
 {
   "name": "myoung34-hbase",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "author": "Marcus Young",
   "license": "Licensed under (MIT)",
   "description": "Can be used to set up HBase",
   "summary": "A module for managing HBase and the HBase REST API",
   "source": "https://github.com/myoung34/puppet-hbase",
-  "project_page": "https://forge.puppetlabs.com/myoung34/hbase",
+  "project_page": "https://github.com/myoung34/puppet-hbase",
   "issues_url": "https://github.com/myoung34/puppet-hbase/issues",
   "tags": [
     "rest",
