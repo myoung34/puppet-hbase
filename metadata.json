@@ -1,6 +1,6 @@
 {
   "name": "myoung34-hbase",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "author": "Marcus Young",
   "license": "Licensed under (MIT)",
   "description": "Can be used to set up HBase",
