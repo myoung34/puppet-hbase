@@ -23,19 +23,25 @@
 prog="hbase"
 port="<%= @port %>"
 hbase_root="/usr/lib/hbase"
+zookeeper_root='/usr/lib/zookeeper'
 hbase_daemon="$hbase_root/bin/hbase-daemon.sh"
+zookeeper_daemon="$zookeeper_root/bin/zkServer.sh"
 hbase_master_start="$hbase_daemon start master"
 hbase_master_stop="$hbase_daemon stop master"
+hbase_regionserver_start="$hbase_daemon start regionserver"
+hbase_regionserver_stop="$hbase_daemon stop regionserver"
 hbase_rest_start="$hbase_daemon start rest -p $port"
 hbase_rest_stop="$hbase_daemon stop rest"
+zookeeper_start="$zookeeper_daemon start"
+zookeeper_stop="$zookeeper_daemon stop"
 
 lockfile=/var/lock/subsys/hbase
 
 start() {
     [[ -x $hbase_daemon ]] || exit 5
     echo -n $"Starting $prog: "
-    su - hbase -c "$hbase_master_start"
-    su - hbase -c "$hbase_rest_start"
+    su - zookeeper -c "$zookeeper_start"
+    su - hbase -c "$hbase_master_start; $hbase_regionserver_start; $hbase_rest_start"
     retval=$?
     echo
     [ $retval -eq 0 ] && touch $lockfile
@@ -44,8 +50,8 @@ start() {
 
 stop() {
     echo -n $"Stopping $prog: "
-    su - hbase -c "$hbase_rest_stop"
-    su - hbase -c "$hbase_master_stop"
+    su - zookeeper -c "$zookeeper_stop"
+    su - hbase -c "$hbase_rest_stop; $hbase_regionserver_stop; $hbase_master_stop"
     retval=$?
     echo
     [ $retval -eq 0 ] && rm -f $lockfile

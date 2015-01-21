@@ -69,9 +69,13 @@ class hbase::hbase (
 
   firewall { '102 allow hbase':
     action => accept,
-    port   => [
-      $port,
-    ],
+    port   => [ $port, 60000, 60010, 60020, 60030 ],
+    proto  => tcp,
+  }->
+
+  firewall { '103 allow zookeeper':
+    action => accept,
+    port   => [ 2181 ],
     proto  => tcp,
   }->
 
@@ -111,6 +115,14 @@ class hbase::hbase (
     onlyif  => 'grep -r "export JAVA_HOME=/usr/java/default" /usr/lib/hbase/conf/hbase-env.sh',
     path    => $::path,
     require => Package['hbase'],
+  }->
+
+  file { '/usr/lib/hbase/conf/hbase-site.xml':
+      content => template('hbase/configuration-hbase-site.xml.erb'),
+      group   => 'hadoop',
+      mode    => '0644',
+      owner   => 'hbase',
+      replace => true,
   }->
 
   file { '/etc/init.d/hbase':
