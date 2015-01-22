@@ -4,13 +4,13 @@
 #
 # === Parameters
 #
-# [*port*]
+# [*rest_port*]
 #   The port to install the REST API on.
 #
 # === Examples
 #
 #  class { 'hbase::hbase':
-#    port => '8080' 
+#    rest_port => '8080' 
 #  }
 #
 #  class { 'hbase::hbase':
@@ -45,31 +45,53 @@
 #   THE SOFTWARE.
 #
 class hbase::hbase (
-  $port = $hbase::params::port,
+  $rest_port = $hbase::params::rest_port,
 ) inherits hbase::params {
-  yumrepo { 'HDP-2.1.4.0':
-    baseurl         => 'http://public-repo-1.hortonworks.com/HDP/centos6/2.x/updates/2.1.4.0',
-    descr           => 'Hortonworks Data Platform Version - HDP-2.1.4.0',
+  if ($::osfamily !~ /RedHat/) {
+    fail("Operating system family '${osfamily}' is not supported.")
+  }
+  if ($::operatingsystem != 'CentOS') {
+    warning("This has not been tested on '${operatingsystem}'.")
+
+    #there is currently no way to test for warnings.
+    exec { 'warn':
+      command => 'touch /tmp/hbase-puppet-warning',
+      path    => $::path,
+      creates => '/tmp/hbase-puppet-warning',
+    }
+  }
+
+  if $::operatingsystemmajrelease {
+    $os_maj_release = $::operatingsystemmajrelease
+  } else {
+    $os_versions    = split($::operatingsystemrelease, '[.]')
+    $os_maj_release = $os_versions[0]
+  }
+  if ($os_maj_release != "6") {
+    fail("RedHat major version '${os_maj_release}' is not supported. Currently only '6' is supported.")
+  }
+
+  yumrepo { 'HDP-2.1.7.0':
+    baseurl         => 'http://public-repo-1.hortonworks.com/HDP/centos6/2.x/updates/2.1.7.0',
+    descr           => 'Hortonworks Data Platform Version - HDP-2.1.7.0',
     enabled         => 1,
     gpgcheck        => 0,
-    gpgkey          => 'http://public-repo-1.hortonworks.com/HDP/centos6/2.x/updates/2.1.4.0/RPM-GPG-KEY/RPM-GPG-KEY-Jenkins',
     metadata_expire => 10,
     priority        => 1,
   }->
 
-  yumrepo { 'HDP-UTILS-1.1.0.17':
-    baseurl         => 'http://public-repo-1.hortonworks.com/HDP-UTILS-1.1.0.17/repos/centos6',
-    descr           => 'Hortonworks Data Platform Utils Version - HDP-UTILS-1.1.0.17',
+  yumrepo { 'HDP-UTILS-1.1.0.20':
+    baseurl         => 'http://public-repo-1.hortonworks.com/HDP-UTILS-1.1.0.20/repos/centos6',
+    descr           => 'Hortonworks Data Platform Utils Version - HDP-UTILS-1.1.0.20',
     enabled         => 1,
     gpgcheck        => 0,
-    gpgkey          => 'http://public-repo-1.hortonworks.com/HDP/centos6/2.x/updates/2.1.4.0/RPM-GPG-KEY/RPM-GPG-KEY-Jenkins',
     metadata_expire => 10,
     priority        => 1,
   }->
 
   firewall { '102 allow hbase':
     action => accept,
-    port   => [ $port, 60000, 60010, 60020, 60030 ],
+    port   => [ $rest_port, 60000, 60010, 60020, 60030 ],
     proto  => tcp,
   }->
 
@@ -86,9 +108,6 @@ class hbase::hbase (
   group { 'hadoop':
     ensure     => present,
   }
-
-  $created_resource_hash = create_resources_hash_from(['hdfs'])
-  create_resources(hbase::hadoopuser, $created_resource_hash)
 
   package { 'hbase':
     ensure   => latest,

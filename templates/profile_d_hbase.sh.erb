@@ -1,14 +1,4 @@
 #!/bin/sh
-export JAVA_HOME=$(readlink -f /usr/bin/java | sed "s:bin/java::")
-
-#export HBASE_CONF_DIR="/etc/hbase/conf"
-#
-#export HBASE_LOG_DIR="/var/log/hbase"
-#
-## Directory to store the HBase process ID.
-#export HBASE_PID_DIR="/var/run/hbase"
-#
-#export HBASE_USER=hbase
-#
-## A common group shared by services.
-#export HADOOP_GROUP=hadoop
+executable=$(which java)
+[[ -n $(command -v javac) ]] && executable=$(which javac)
+export JAVA_HOME=$(readlink -f ${executable} | sed "s:bin/javac\?::")

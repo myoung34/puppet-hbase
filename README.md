@@ -22,13 +22,13 @@ Quick Start
         include hbase
 
         class { 'hbase':
-          port => '8080' # 8000 is default
+          rest_port => '8080' # 8000 is default
         }
 
 Hiera
 =====
 
-    hbase::port: '8080'
+    hbase::rest_port: '8080'
     
 Testing
 =====
