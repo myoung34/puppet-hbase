@@ -4,7 +4,7 @@
 #
 # === Parameters
 #
-# [*port*]
+# [*rest_port*]
 #   The port to install the REST API on.
 #
 # === Examples
@@ -12,7 +12,7 @@
 #  include hbase
 #
 #  class { 'hbase':
-#    port => '8080' 
+#    rest_port => '8080' 
 #  }
 #
 # === Authors
@@ -44,9 +44,9 @@
 #   THE SOFTWARE.
 #
 class hbase (
-  $port = $hbase::params::port,
+  $rest_port = $hbase::params::rest_port,
 ) inherits hbase::params {
   class { 'hbase::hbase':
-    port => $port,
+    rest_port => $rest_port,
   }
 }

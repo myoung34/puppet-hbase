@@ -39,5 +39,5 @@
 #   THE SOFTWARE.
 #
 class hbase::params {
-  $port = '8000'
+  $rest_port = '8000'
 }
