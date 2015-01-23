@@ -48,10 +48,10 @@ class hbase::hbase (
   $rest_port = $hbase::params::rest_port,
 ) inherits hbase::params {
   if ($::osfamily !~ /RedHat/) {
-    fail("Operating system family '${osfamily}' is not supported.")
+    fail("Operating system family '${::osfamily}' is not supported.")
   }
   if ($::operatingsystem != 'CentOS') {
-    warning("This has not been tested on '${operatingsystem}'.")
+    warning("This has not been tested on '${::operatingsystem}'.")
 
     #there is currently no way to test for warnings.
     exec { 'warn':
@@ -67,7 +67,7 @@ class hbase::hbase (
     $os_versions    = split($::operatingsystemrelease, '[.]')
     $os_maj_release = $os_versions[0]
   }
-  if ($os_maj_release != "6") {
+  if ($os_maj_release != '6') {
     fail("RedHat major version '${os_maj_release}' is not supported. Currently only '6' is supported.")
   }
 
@@ -114,8 +114,8 @@ class hbase::hbase (
     notify   => Service['hbase'],
     provider => yum,
     require  => [
-      Yumrepo['HDP-UTILS-1.1.0.17'],
-      Yumrepo['HDP-2.1.4.0'],
+      Yumrepo['HDP-UTILS-1.1.0.20'],
+      Yumrepo['HDP-2.1.7.0'],
     ],
   }->
 
