@@ -46,7 +46,7 @@ shared_context 'hbase installation' do
   )}
 
 
-  it { should contain_package('hbase').with_ensure('latest').with_provider('yum').with_require('[Yumrepo[HDP-UTILS-1.1.0.17]{:name=>"HDP-UTILS-1.1.0.17"}, Yumrepo[HDP-2.1.4.0]{:name=>"HDP-2.1.4.0"}]') }
+  it { should contain_package('hbase').with_ensure('latest').with_provider('yum').with_require('[Yumrepo[HDP-UTILS-1.1.0.20]{:name=>"HDP-UTILS-1.1.0.20"}, Yumrepo[HDP-2.1.7.0]{:name=>"HDP-2.1.7.0"}]') }
   it { should contain_file('/etc/profile.d/hbase.sh').with_replace('true').with_mode('0777').with_notify('Service[hbase]').with_owner('root').with_group('root') }
   it { should contain_file('/usr/lib/hbase/conf/hbase-site.xml').with_replace('true').with_owner('hbase').with_group('hadoop').with_mode('0644') }
   it { should contain_exec('fix hbase JAVA_HOME').with_notify('Service[hbase]').with_require('Package[hbase]') }

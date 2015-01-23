@@ -21,7 +21,7 @@
 [ "$NETWORKING" = "no" ] && exit 0
 
 prog="hbase"
-port="<%= @port %>"
+port="<%= @rest_port %>"
 hbase_root="/usr/lib/hbase"
 zookeeper_root='/usr/lib/zookeeper'
 hbase_daemon="$hbase_root/bin/hbase-daemon.sh"
