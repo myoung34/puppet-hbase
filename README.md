@@ -1,6 +1,9 @@
 puppet-hbase
 ================
-![Build Status](https://travis-ci.org/myoung34/puppet-hbase.png?branch=master,dev)&nbsp;[![Coverage Status](https://coveralls.io/repos/myoung34/puppet-hbase/badge.png)](https://coveralls.io/r/myoung34/puppet-hbase)&nbsp;[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/myoung34/puppet-hbase/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
+![Build Status](https://travis-ci.org/myoung34/puppet-hbase.png?branch=master,dev)&nbsp;
+[![Coverage Status](https://coveralls.io/repos/myoung34/puppet-hbase/badge.png)](https://coveralls.io/r/myoung34/puppet-hbase)&nbsp;
+[![Puppet Forge](https://img.shields.io/puppetforge/v/myoung34/hbase.svg)](https://forge.puppetlabs.com/myoung34/hbase)
+[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/myoung34/puppet-hbase/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
 
 Puppet Module For HBase
 
@@ -29,13 +32,13 @@ Hiera
 =====
 
     hbase::rest_port: '8080'
-    
+
 Testing
 =====
 
 * Run the default tests (puppet + lint)
-     
-        bundle install 
+
+        bundle install
         bundle exec rake
 
 * Run the [beaker](https://github.com/puppetlabs/beaker) acceptance tests
@@ -45,7 +48,7 @@ Testing
 Submitting pull requests
 ========================
 
-I use the the gitflow model. 
+I use the the gitflow model.
  * Features should be created with a 'feature' prefix, such as 'feature/add-something'.
  * Bugs should be created in a branch with a 'bugfix' prefix, such as 'bugfix/issue-4' or 'bugfix/timing-issue'.
 
