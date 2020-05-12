@@ -51,7 +51,7 @@ GEM
       archive-tar-minitar
       excon (>= 0.38.0)
       json
-    excon (0.43.0)
+    excon (0.73.0)
     extlib (0.9.16)
     facter (1.7.6)
     faraday (0.9.1)
